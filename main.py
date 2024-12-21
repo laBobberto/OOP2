@@ -1,5 +1,6 @@
 import time
-from FileProcessor import FileProcessorFactory
+
+from FileProcessorFactory import FileProcessorFactory
 from StatisticsGenerator import StatisticsGenerator
 
 

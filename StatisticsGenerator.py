@@ -6,13 +6,16 @@ class StatisticsGenerator:
         self.cityFloorStatistics = defaultdict(Counter)
 
     def processData(self, parsedData):
-        duplicateEntriesCounter = Counter([f"{entry['cityName']}-{entry['buildingFloors']}" for entry in parsedData])
+        duplicateEntriesCounter = Counter(
+            (entry['city'], entry['street'], entry['house'], entry['floor']) for entry in parsedData
+        )
+
         duplicateRecords = {record: count for record, count in duplicateEntriesCounter.items() if count > 1}
 
+        self.cityFloorStatistics = defaultdict(lambda: defaultdict(int))
+
         for entry in parsedData:
-            cityName = entry["cityName"]
-            buildingFloors = entry["buildingFloors"]
-            self.cityFloorStatistics[cityName][buildingFloors] += 1
+            self.cityFloorStatistics[entry["city"]][entry["floor"]] += 1
 
         return duplicateRecords
 

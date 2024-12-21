@@ -14,8 +14,10 @@ class CSVProcessor(FileProcessor):
             next(csvReader)
             for row in csvReader:
                 parsedData.append({
-                    "cityName": row[0],
-                    "buildingFloors": int(row[3])
+                    "city": row[0],
+                    "street": row[1],
+                    "house": int(row[2]),
+                    "floor": int(row[3])
                 })
         return parsedData
 
@@ -26,17 +28,9 @@ class XMLProcessor(FileProcessor):
         rootElement = xmlTree.getroot()
         for itemElement in rootElement.findall("item"):
             parsedData.append({
-                "cityName": itemElement.attrib["city"],
-                "buildingFloors": int(itemElement.attrib["floor"])
+                "city": itemElement.attrib["city"],
+                "street": itemElement.attrib["street"],
+                "house": int(itemElement.attrib["house"]),
+                "floor": int(itemElement.attrib["floor"])
             })
         return parsedData
-
-class FileProcessorFactory:
-    @staticmethod
-    def getProcessor(filePath):
-        if filePath.endswith(".csv"):
-            return CSVProcessor()
-        elif filePath.endswith(".xml"):
-            return XMLProcessor()
-        else:
-            raise ValueError("Unsupported file format")
